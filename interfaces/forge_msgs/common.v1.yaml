@@ -6,7 +6,9 @@ conventions:
   timing:
     source: dora_event
     payload_timestamp: omitted
-    derived_output: inherit_source_event_timestamp
+    derived_output: preserve_explicit_source_sample_time_when_describing_that_sample
+    native_dora_timestamp: regenerated_on_node_publish_not_source_sample_time
+    runtime_latency: ../observability/PROTOCOL.md
   spatial_context:
     source: node_configuration_or_dora_metadata
     payload_frame_id: omitted

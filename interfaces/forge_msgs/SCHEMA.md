@@ -29,8 +29,12 @@ change the wire contract of existing messages.
 - The schema does not require Arrow schema metadata. Dora/IPC paths may drop it, so domain payload semantics must be represented as real columns.
 - Motion action identity and lifecycle are the explicit exception: they use Dora's well-known event metadata keys `goal_id` and `goal_status`. Action recordings must preserve the Dora event metadata alongside the Arrow payload.
 - Core messages do not contain ROS-style `Header`, timestamp, or `frame_id`.
-- Timing comes from the Dora event context. Derived outputs should preserve the
-  timestamp of the source event when they describe that source sample.
+- Sample timing belongs in explicit Dora event context. Derived outputs that
+  describe a source sample should preserve that sample's time when supplied;
+  Dora's native HLC is regenerated on Node publication, not inherited sample time.
+- [Publish/receive observability](../observability/PROTOCOL.md) separately defines optional
+  runtime timing parameters. Its origin is the first application publish, not
+  sensor acquisition, simulation time, or application processing completion.
 - Frame and fixed calibration information should live in Dora metadata, topic
   naming, node configuration, or adapter layers.
 

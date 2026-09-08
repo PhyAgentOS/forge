@@ -9,6 +9,8 @@ This repository intentionally focuses on the framework layer:
 - `interfaces/forge_msgs/` contains the canonical message schema.
 - `interfaces/forge_tool/` contains the Tool documentation index, architecture, and
   language-neutral Wire Protocol.
+- `interfaces/observability/` contains the optional publish/receive metadata
+  protocol and documentation index.
 - `packages/msgs` provides Python message models and Arrow serialization.
 - `crates/forge_msgs` provides the Rust message implementation.
 - `cpp/forge_msgs` provides the C++ message implementation.
@@ -62,12 +64,19 @@ Start with [`interfaces/forge_tool/README.md`](interfaces/forge_tool/README.md).
 the architecture, normative Wire protocol, Python package guide, and canonical Arrow
 schema without duplicating their contracts.
 
+## Observability documentation
+
+Start with [`interfaces/observability/README.md`](interfaces/observability/README.md).
+It links the metadata protocol and Python package guide without duplicating their
+contracts.
+
 ## Repository Layout
 
 ```text
 forge/
 ├── interfaces/forge_msgs/      # Canonical cross-language message schema
 ├── interfaces/forge_tool/      # Tool architecture and Wire Protocol
+├── interfaces/observability/   # Publish/receive metadata protocol and validation
 ├── packages/common/            # Python shared utilities
 ├── packages/kinematics/        # Python Pinocchio FK/Jacobian/IK library
 ├── packages/msgs/              # Python message models and Arrow conversion

@@ -42,7 +42,7 @@ jobs:
         run: uv run python scripts/check_forge_msgs_schema.py
 
       - name: Run Python tests
-        run: uv run pytest packages/msgs/tests packages/policy/tests packages/robot/tests packages/kinematics/tests packages/tool/tests
+        run: uv run pytest packages/common/tests packages/msgs/tests packages/policy/tests packages/robot/tests packages/kinematics/tests packages/tool/tests
 
       - name: Build and validate all Python distributions
         run: uv run python scripts/build_python_distributions.py
