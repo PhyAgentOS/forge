@@ -18,10 +18,17 @@ Related documentation:
 
 ## Capability status
 
-The Rust observability APIs are implemented in the source tree and are not yet
-released. Transport adapters and applications still own typed metadata conversion,
-Dora calls, parent selection, snapshot scheduling, and export. Real Dora typed
-metadata conformance and application instrumentation remain pending.
+The Rust observability APIs are available starting with `forgelab_common 2.1.0`.
+Add the dependency under the library's import name:
+
+```toml
+[dependencies]
+forge_common = { package = "forgelab_common", version = "2.1.0" }
+```
+
+Transport adapters and applications still own typed metadata conversion, Dora
+calls, parent selection, snapshot scheduling, and export. Real Dora typed
+metadata conformance and application-wide instrumentation remain pending.
 
 ## Tracing usage
 

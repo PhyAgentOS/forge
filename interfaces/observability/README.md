@@ -4,9 +4,9 @@ Forge observability defines application-level publish/receive timing for generic
 producers and consumers. It uses optional Dora event metadata without changing
 Arrow payload schemas or introducing a new package family.
 
-The metadata contract is v1 and is not yet released. Python and Rust helpers
-belong to `forge-common`; their current capabilities and restrictions are
-documented in their package guides.
+The v1 metadata contract and Python and Rust helpers are introduced in Common
+`2.1.0`. Their current capabilities and restrictions are documented in their
+package guides.
 
 ## Language support and examples
 

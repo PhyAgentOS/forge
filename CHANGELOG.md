@@ -4,6 +4,10 @@ Forge package families are versioned independently. Python, Rust, and C++ implem
 
 ## Unreleased
 
+## forge-common 2.1.0 - 2026-09-08
+
+Protected tag: `forge-common-v2.1.0`
+
 - Define the optional Forge publish/receive observability v1 metadata contract without changing Arrow payload schemas.
 - Add dependency-free Python `forge-common` receive contexts and publish helpers with explicit provenance, clock injection, and isolated metrics failures.
 - Add std-only Rust `forge_common` typed metadata parsing, receive contexts, explicit publication modes, two-phase send completion, and injectable clocks without a Dora or Arrow dependency.

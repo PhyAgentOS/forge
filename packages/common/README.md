@@ -17,7 +17,11 @@ Related documentation:
 
 ## Capability status
 
-The observability APIs are implemented in the source tree and are not yet released.
+The observability APIs are available starting with `forge-common 2.1.0`.
+
+```bash
+pip install 'forge-common>=2.1.0,<3'
+```
 
 | Capability | Status |
 | --- | --- |

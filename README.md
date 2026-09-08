@@ -23,7 +23,7 @@ This repository intentionally focuses on the framework layer:
 - `packages/tool` provides dependency-free ToolEndpoint SPI and logical Wire models,
   with embedded Query and Action handling; Session dispatch remains future work.
 - `packages/common` and `crates/forge_common` provide shared utilities,
-  currently including logging and tracing helpers.
+  including logging, tracing, and optional publish/receive observability.
 - `packages/kinematics` provides optional Pinocchio-based URDF forward
   kinematics, geometric Jacobians, and deterministic damped-least-squares IK.
 
@@ -33,9 +33,11 @@ packages, for example a separate `forge_robots` repository.
 ## Status
 
 Forge tracks six package families: Common, Msgs, Robot, Policy, Kinematics, and Tool.
-The coordinated Dora 1.x release train declares all six families as `2.0.0` while
-allowing later family-specific patch releases. Implementations of one family across
-Python, Rust, C++, and the language-neutral interface remain synchronized.
+Common is `2.1.0`; the other five families remain at the coordinated Dora 1.x
+`2.0.0` baseline. Families can receive independent minor and patch releases.
+Package versions within one family remain synchronized across languages;
+capabilities may differ, and language-neutral interface versions are tracked
+separately.
 
 `master` carries the latest Forge 2.x development line. `stable/1.x` preserves the
 Dora 0.4-compatible Forge 1.x line for critical fixes during downstream migration.
@@ -206,7 +208,7 @@ include(FetchContent)
 FetchContent_Declare(
   forge_common
   GIT_REPOSITORY https://gitlab.ex-ai.cn/PhyAgentOS/framework/forge.git
-  GIT_TAG forge-common-v2.0.0
+  GIT_TAG forge-common-v2.1.0
   SOURCE_SUBDIR cpp/forge_common
 )
 FetchContent_MakeAvailable(forge_common)

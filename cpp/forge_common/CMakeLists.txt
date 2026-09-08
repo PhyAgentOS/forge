@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(forge_common_cpp VERSION 2.0.0 LANGUAGES CXX)
+project(forge_common_cpp VERSION 2.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

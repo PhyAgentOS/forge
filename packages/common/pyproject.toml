@@ -1,6 +1,6 @@
 [project]
 name = "forge-common"
-version = "2.0.0"
+version = "2.1.0"
 description = "Shared Python utilities for Forge packages."
 readme = "README.md"
 authors = [

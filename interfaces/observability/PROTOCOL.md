@@ -1,6 +1,6 @@
 # Forge Observability Metadata Protocol v1
 
-- Status: **unreleased**
+- Status: **stable**, introduced in Common `2.1.0`
 - Metadata version: `forge_obs_version = 1`
 
 This document is the normative language-neutral contract for application-level

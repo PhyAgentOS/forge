@@ -8,7 +8,7 @@ Forge is a Monorepo with independently versioned logical package families. Imple
 
 ```toml
 [packages]
-common = "2.0.0"
+common = "2.1.0"
 msgs = "2.0.0"
 robot = "2.0.0"
 policy = "2.0.0"
@@ -46,7 +46,7 @@ Do not use or move historical generic tags such as `v1.0.0`. They belong to an e
 The initial five `1.0.0` tags may point to the same clean commit. Tool's first release is `forge-tool-v0.1.0`. Later releases can be independent, for example:
 
 ```text
-forge-common-v2.0.0
+forge-common-v2.1.0
 forge-msgs-v2.0.0
 forge-robot-v2.0.0
 forge-policy-v2.0.0
@@ -61,7 +61,7 @@ Use the tag for the exact family being consumed:
 ```toml
 [tool.uv.sources]
 forge-msgs = { git = "https://gitlab.ex-ai.cn/PhyAgentOS/framework/forge.git", tag = "forge-msgs-v2.0.0", subdirectory = "packages/msgs" }
-forge-common = { git = "https://gitlab.ex-ai.cn/PhyAgentOS/framework/forge.git", tag = "forge-common-v2.0.0", subdirectory = "packages/common" }
+forge-common = { git = "https://gitlab.ex-ai.cn/PhyAgentOS/framework/forge.git", tag = "forge-common-v2.1.0", subdirectory = "packages/common" }
 ```
 
 A downstream `uv.lock` or `Cargo.lock` records the exact commit resolved from each protected tag. Protected release tags must never be moved.
@@ -114,6 +114,7 @@ uv sync --locked --all-packages --all-extras --dev
 uv run ruff check .
 uv run python scripts/check_forge_msgs_schema.py
 uv run pytest \
+  packages/common/tests \
   packages/msgs/tests \
   packages/policy/tests \
   packages/robot/tests \
