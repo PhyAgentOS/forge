@@ -7,9 +7,8 @@ This document is the normative language-neutral contract for application-level
 publish/receive timing carried in Dora event metadata. Related documentation:
 
 - [Documentation index](README.md)
-
 - [Python package guide](../../packages/common/README.md)
-
+- [Rust crate guide](../../crates/forge_common/README.md)
 - [Message transport conventions](../forge_msgs/SCHEMA.md#transport-contract)
 
 The words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** describe protocol
@@ -207,5 +206,6 @@ failure requires external monitoring.
 
 The protocol does not mandate an exporter, scheduler, tracing backend, histogram
 layout, or hard-real-time guarantee. The
-[Python package guide](../../packages/common/README.md) defines the current helper
-API, metrics, snapshot format, bounds, and restrictions.
+[Python package guide](../../packages/common/README.md) and
+[Rust crate guide](../../crates/forge_common/README.md) define their current helper
+APIs, metrics, snapshot formats, bounds, and restrictions.

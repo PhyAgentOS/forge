@@ -6,8 +6,10 @@ Forge package families are versioned independently. Python, Rust, and C++ implem
 
 - Define the optional Forge publish/receive observability v1 metadata contract without changing Arrow payload schemas.
 - Add dependency-free Python `forge-common` receive contexts and publish helpers with explicit provenance, clock injection, and isolated metrics failures.
-- Add bounded local latency histograms, diagnostic counters, and interval snapshots; no exporter threads, network dependencies, or automatic business-node instrumentation are enabled.
-- Add Common tests to Python CI. Real Dora topology tests, Rust/C++ observability implementations, and cross-language metadata conformance remain follow-up work.
+- Add std-only Rust `forge_common` typed metadata parsing, receive contexts, explicit publication modes, two-phase send completion, and injectable clocks without a Dora or Arrow dependency.
+- Add bounded local latency histograms, diagnostic counters, and interval snapshots in Python and Rust; no exporter threads, network dependencies, or automatic business-node instrumentation are enabled.
+- Add runnable Python and Rust examples covering new-origin publication, receive observation, derived publication, metadata adaptation, and interval snapshots; document C++ observability as pending rather than presenting an unavailable API.
+- Add Common tests to Python CI. Real Dora topology tests, typed cross-language metadata conformance, C++ observability, and application instrumentation remain follow-up work.
 
 ## forge-common 2.0.0 - 2026-09-04
 

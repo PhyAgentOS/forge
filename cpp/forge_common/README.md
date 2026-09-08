@@ -5,6 +5,16 @@ Lightweight C++ shared utilities for Forge packages.
 The C++ package currently provides standard-library-only logging helpers. It
 does not depend on `spdlog` or other third-party logging libraries.
 
+## Capability status
+
+Publish/receive observability is not implemented in the C++ library yet. C++
+applications must not assume that the Python or Rust helper APIs exist here or
+advertise a C++ boundary as instrumented merely because metadata is forwarded.
+The future implementation must follow the same
+[language-neutral metadata protocol](../../interfaces/observability/PROTOCOL.md).
+Current language support and runnable examples are listed in the
+[observability documentation index](../../interfaces/observability/README.md).
+
 ## Usage
 
 ```cpp
@@ -23,7 +33,7 @@ For Rust-style one-time initialization:
 forge_common::InitLogging("my-node");
 ```
 
-## Environment Variables
+## Environment variables
 
 - `FORGE_LOG_LEVEL`: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`, or `OFF`
 - `FORGE_LOG_FILE`: optional file path for log output

@@ -22,15 +22,16 @@ The observability APIs are implemented in the source tree and are not yet releas
 | Capability | Status |
 | --- | --- |
 | Logging helpers | Available in the current Common release. |
-| Metadata parsing and explicit publish/receive contexts | Implemented in Python. |
-| Bounded histograms, counters, and interval snapshots | Implemented in Python. |
+| Metadata parsing and explicit publish/receive contexts | Implemented in Python and Rust. |
+| Bounded histograms, counters, and interval snapshots | Implemented in Python and Rust. |
 | Metadata validation and generic topology unit tests | Implemented. |
-| Real Dora topology and Rust/C++ metadata conformance | Pending. |
+| Real Dora topology, typed cross-language metadata conformance, and C++ implementation | Pending. |
 | Application-wide instrumentation and overhead validation | Pending. |
 
 The application remains responsible for its Dora dependency, input loop, actual
 parent selection, snapshot scheduling, and export. Unit-test coverage does not
-imply that an existing dataflow is instrumented.
+imply that an existing dataflow is instrumented. Rust users should follow the
+[Rust crate guide](../../crates/forge_common/README.md).
 
 ## Logging usage
 
@@ -55,8 +56,21 @@ Use `configure_from_env()` in applications or node entry points, then call
 
 ## Observability quickstart
 
-The examples below assume an existing Dora `node` with an `out` port and an
-already prepared `payload`. The helper uses a structural sender interface; it
+A complete dependency-free example is available at
+[`examples/publish_receive.py`](examples/publish_receive.py). Run it from the
+repository root:
+
+```bash
+uv run --package forge-common python packages/common/examples/publish_receive.py
+```
+
+It creates a new camera origin, observes the image at a consumer, performs a
+derived publish, and prints hop, end-to-end, and turnaround aggregates. It uses
+an in-memory sender and deterministic clock so the metadata and measured values
+are directly inspectable.
+
+The Dora-oriented snippets below assume an existing `node` with an `out` port and
+an already prepared `payload`. The helper uses a structural sender interface; it
 does not construct a Dora node.
 
 ```python
@@ -232,7 +246,8 @@ uv run ruff check packages/common
 
 Tests cover metadata validation, timing formulas, explicit provenance, fan-out,
 joins, cached reuse, unknown versions, faults, interval resets, and resource
-bounds.
+bounds. The runnable example covers the public new-origin, receive, derived
+publish, and snapshot flow.
 
 Python 3.11 syntax and imports without site-packages are checked. Those checks do
 not substitute for testing every supported interpreter, real Dora transport,
