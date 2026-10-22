@@ -1,5 +1,7 @@
 # Forge
 
+[English](README.md) | [简体中文](README_zh.md)
+
 Forge is a small robotics framework core for Dora dataflows. It provides shared
 message schemas, Python and Rust message implementations, reusable node runner
 helpers for robot drivers and policy nodes, and typed tool endpoint contracts.
@@ -70,7 +72,8 @@ schema without duplicating their contracts.
 
 Downstream Node repositories must document concrete Node entrypoints, Tool support,
 Endpoint IDs, operations, direct HTTP APIs, and deployment Tool bindings in their root
-README. Count Nodes, Endpoints, operations, and Gateway Tools separately; state `0` or
+README. Maintain separate English `README.md` and Simplified Chinese `README_zh.md`,
+with reciprocal links and synchronized changes. Count Nodes, Endpoints, operations, and Gateway Tools separately; state `0` or
 configuration-dependent behavior explicitly. Framework helpers are not deployed Nodes.
 See the [Node README contract](CONTRIBUTING.md#node-readme-contract) for the required
 fields, template, and review checklist.
@@ -196,7 +199,7 @@ include(FetchContent)
 
 FetchContent_Declare(
   forge
-  GIT_REPOSITORY https://gitlab.ex-ai.cn/PhyAgentOS/framework/forge.git
+  GIT_REPOSITORY https://github.com/PhyAgentOS/forge.git
   GIT_TAG forge-msgs-v2.0.0
   SOURCE_SUBDIR cpp/forge_msgs
 )
@@ -216,7 +219,7 @@ include(FetchContent)
 
 FetchContent_Declare(
   forge_common
-  GIT_REPOSITORY https://gitlab.ex-ai.cn/PhyAgentOS/framework/forge.git
+  GIT_REPOSITORY https://github.com/PhyAgentOS/forge.git
   GIT_TAG forge-common-v2.1.0
   SOURCE_SUBDIR cpp/forge_common
 )
@@ -236,7 +239,7 @@ include(FetchContent)
 
 FetchContent_Declare(
   forge_robot
-  GIT_REPOSITORY https://gitlab.ex-ai.cn/PhyAgentOS/framework/forge.git
+  GIT_REPOSITORY https://github.com/PhyAgentOS/forge.git
   GIT_TAG forge-robot-v2.0.0
   SOURCE_SUBDIR cpp/forge_robot
 )

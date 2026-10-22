@@ -86,7 +86,10 @@ License, Version 2.0.
 ## Node README contract
 
 When creating or changing a downstream Adapter/Operator Node repository, maintain a
-capability summary in its root README. This is a documentation requirement; it does
+capability summary in its root README. Keep English in `README.md` and Simplified
+Chinese in `README_zh.md`, with reciprocal language links at the top. Maintain the
+same interface facts, commands and examples in both files in each change; do not
+interleave translated prose within one README. This is a documentation requirement; it does
 not require a data-plane Node to implement ToolEndpoint or HTTP.
 
 Count independent production Dora Node entrypoints, not aliases, CLI subcommands,
