@@ -82,3 +82,62 @@ When filing an issue, include:
 
 By contributing, you agree that your contributions are licensed under the Apache
 License, Version 2.0.
+
+## Node README contract
+
+When creating or changing a downstream Adapter/Operator Node repository, maintain a
+capability summary in its root README. This is a documentation requirement; it does
+not require a data-plane Node to implement ToolEndpoint or HTTP.
+
+Count independent production Dora Node entrypoints, not aliases, CLI subcommands,
+classes, packages, test sinks, or fake plants. List debug/example Nodes separately.
+For each supported mode, count concrete Endpoint IDs and their operations separately.
+ToolSpec aliases and readiness are deployment concerns: never infer the number of
+caller-visible Tools from the number of Nodes, Endpoints, or operations.
+
+Required fields:
+
+| Field | Required content |
+| --- | --- |
+| Production Nodes | Count, names, source/CLI and packaged entrypoints; aliases and optional modes |
+| Auxiliary programs | Test/fake/example Nodes and offline CLI utilities, excluded from production count |
+| Tool support | Data-plane only, provider, caller, Gateway, or an explicit combination; enabling configuration |
+| Endpoints | Count and exact `endpoint_id`, provider Node, and descriptor source link; write `0` when absent |
+| Operations | Per-Endpoint count and exact operation names; Query/Action/Session, concurrency, lifecycle controls |
+| Direct HTTP Tool API | Method/path, body/result contract, errors and units, or `0 (via Gateway)`; unrelated APIs listed separately |
+| Tool bindings | `tool_id -> endpoint_id / operation -> provider Node`; distinguish deployed examples from fixed contracts |
+| Compatibility | Wire/schema versions, dependency locks, Gateway/Node build revisions and unsupported combinations |
+| Source and examples | Descriptor/handler, dataflow, config, request/result schema, build instructions and release provenance |
+
+Start with this Markdown template and replace every placeholder:
+
+```markdown
+## Node, Endpoint and Tool API
+
+| Item | Implementation |
+| --- | --- |
+| Production Nodes | <count; names; source/CLI and packaged entrypoints> |
+| Auxiliary programs | <debug Nodes, aliases and offline CLI utilities> |
+| Tool support | <data-plane only / provider / caller / Gateway; activation mode> |
+| Endpoints | <count; endpoint_id; provider Node; descriptor link> |
+| Operations | <per-Endpoint count; operation; semantics; concurrency and controls> |
+| Direct HTTP Tool API | <count and method/path table, or 0; Gateway owns external API> |
+| Gateway Tools | <deployment-configured count; exact example config or no fixed Tool ID> |
+
+<tool_id -> endpoint_id / operation -> provider Node mapping>
+<request/result contract, units/frames, errors, config and source links>
+<compatibility and build/release provenance>
+```
+
+A data-plane-only controller may consume Action-shaped Dora goal/feedback/result
+messages without implementing a ToolEndpoint. A provider can expose several
+operations at one Endpoint; a Gateway routes providers without becoming their
+business Endpoint. Optional provider modes must document the non-provider default.
+Session uses stop and Action uses cancel; accepted control is not a terminal result.
+
+Before review, compare the README against package scripts, build outputs, descriptor,
+handler registration, Gateway ToolSpec and dataflow. Update the summary in the same
+change as any interface or capability change. Do not invent an HTTP URL for a Dora
+provider, advertise a directory absent from the tree, or infer released-binary
+capability from current source. Keep examples generic and exclude local machine
+configuration, credentials, runtime records and private deployment details.

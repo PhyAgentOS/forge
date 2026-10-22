@@ -21,7 +21,7 @@ This repository intentionally focuses on the framework layer:
 - `packages/policy` provides policy implementation protocols and a standard Dora
   Operator node loop.
 - `packages/tool` provides dependency-free ToolEndpoint SPI and logical Wire models,
-  with embedded Query and Action handling; Session dispatch remains future work.
+  with embedded Query, Action, and Session handling.
 - `packages/common` and `crates/forge_common` provide shared utilities,
   including logging, tracing, and optional publish/receive observability.
 - `packages/kinematics` provides optional Pinocchio-based URDF forward
@@ -65,6 +65,15 @@ deployments are not supported as backward compatible.
 Start with [`interfaces/forge_tool/README.md`](interfaces/forge_tool/README.md). It links
 the architecture, normative Wire protocol, Python package guide, and canonical Arrow
 schema without duplicating their contracts.
+
+## Node repository documentation
+
+Downstream Node repositories must document concrete Node entrypoints, Tool support,
+Endpoint IDs, operations, direct HTTP APIs, and deployment Tool bindings in their root
+README. Count Nodes, Endpoints, operations, and Gateway Tools separately; state `0` or
+configuration-dependent behavior explicitly. Framework helpers are not deployed Nodes.
+See the [Node README contract](CONTRIBUTING.md#node-readme-contract) for the required
+fields, template, and review checklist.
 
 ## Observability documentation
 
