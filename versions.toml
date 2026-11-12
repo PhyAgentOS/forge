@@ -2,7 +2,7 @@ schema_version = 1
 
 [packages]
 common = "2.1.0"
-msgs = "2.0.1"
+msgs = "2.1.0"
 robot = "2.0.0"
 policy = "2.0.0"
 kinematics = "2.0.0"

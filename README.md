@@ -35,7 +35,7 @@ packages, for example a separate `forge_robots` repository.
 ## Status
 
 Forge tracks six package families: Common, Msgs, Robot, Policy, Kinematics, and Tool.
-Common is `2.1.0`; Msgs is `2.0.1`; Robot, Policy, Kinematics and Tool remain
+Common is `2.1.0`; Msgs is `2.1.0`; Robot, Policy, Kinematics and Tool remain
 at the coordinated Dora 1.x `2.0.0` baseline. Families can receive independent minor and patch releases.
 Package versions within one family remain synchronized across languages;
 capabilities may differ, and language-neutral interface versions are tracked
@@ -320,6 +320,13 @@ uv run python scripts/build_python_distributions.py --release-family msgs
 Local release-family mode rejects dirty trees and requires the expected protected
 tag not to exist. A family tag CI run selects that family automatically and
 requires its tag to exist and point to the checked-out `HEAD`.
+
+For the Python Msgs release, use the annotated tag `forge-msgs-v2.1.0` on the
+reviewed, merged release commit. Creating that tag in `PhyAgentOS/forge` triggers
+`publish-pypi.yml`. Manually entering a tag in **Run workflow** does not create it;
+the workflow rejects missing or lightweight tags before checking out the release.
+PyPI Trusted Publishing must authorize `PhyAgentOS/forge`, workflow
+`publish-pypi.yml`, environment `pypi-msgs`. See [RELEASING.md](RELEASING.md).
 
 Run the C++ tests:
 

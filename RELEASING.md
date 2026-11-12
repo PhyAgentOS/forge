@@ -9,7 +9,7 @@ Forge is a Monorepo with independently versioned logical package families. Imple
 ```toml
 [packages]
 common = "2.1.0"
-msgs = "2.0.0"
+msgs = "2.1.0"
 robot = "2.0.0"
 policy = "2.0.0"
 kinematics = "2.0.0"
@@ -245,14 +245,20 @@ Environment per package family and add the matching trusted publisher to each
 PyPI project (or as a pending publisher before the first upload). For Msgs:
 
 ```text
-Owner: Forgelab-Robotics
+Owner: PhyAgentOS
 Repository: forge
 Workflow: publish-pypi.yml
 Environment: pypi-msgs
 ```
 
 Existing release tags can be published with `workflow_dispatch` by entering the
-full immutable family tag. Future `forge-*-v*` tag pushes trigger the same
+full immutable family tag. Entering a name does not create its tag. Create an
+annotated tag on the reviewed, merged release commit first; for the current Msgs
+candidate the package version is `2.1.0` and its tag is `forge-msgs-v2.1.0`.
+The resolver rejects absent and lightweight tags before checkout. A tag whose
+version differs from `versions.toml` is also rejected. Do not move an existing tag.
+
+Future `forge-*-v*` tag pushes trigger the same
 workflow automatically. In both cases the workflow checks out and verifies the
 annotated tag, builds only that family, stores the artifacts for audit, and
 publishes only its wheel and source archive.
