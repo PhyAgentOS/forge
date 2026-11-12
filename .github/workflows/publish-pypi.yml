@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Immutable family tag to publish (for example, forge-common-v2.0.0)"
+        description: "Existing annotated family tag (for example, forge-msgs-v2.1.0); this input does not create a tag"
         required: true
         type: string
 
@@ -19,6 +19,8 @@ concurrency:
 jobs:
   resolve:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     outputs:
       tag: ${{ steps.release.outputs.tag }}
@@ -32,6 +34,7 @@ jobs:
         shell: bash
         env:
           REQUESTED_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
 
@@ -42,6 +45,15 @@ jobs:
 
           family="${BASH_REMATCH[1]}"
           version="${BASH_REMATCH[2]}.${BASH_REMATCH[3]}.${BASH_REMATCH[4]}"
+
+          if ! tag_type=$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/${REQUESTED_TAG}" --jq '.object.type'); then
+            echo "::error::Release tag '${REQUESTED_TAG}' does not exist or cannot be read. Run workflow does not create tags. Create the annotated family tag on the reviewed release commit before retrying." >&2
+            exit 1
+          fi
+          if [[ "$tag_type" != "tag" ]]; then
+            echo "::error::Release '${REQUESTED_TAG}' must be an annotated tag; a lightweight tag is not supported." >&2
+            exit 1
+          fi
 
           echo "tag=$REQUESTED_TAG" >> "$GITHUB_OUTPUT"
           echo "family=$family" >> "$GITHUB_OUTPUT"

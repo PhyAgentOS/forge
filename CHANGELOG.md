@@ -4,11 +4,15 @@ Forge package families are versioned independently. Python, Rust, and C++ implem
 
 ## Unreleased
 
-### forge-msgs 2.0.1
+## forge-msgs 2.1.0 - 2026-11-12
+
+Family tag: `forge-msgs-v2.1.0`
 
 - Require Pillow 13 (`>=13.0.0,<14`) for the Python compressed-image codec to consume its security fixes. Python 3.11 remains supported.
 - Cover RGB/grayscale JPEG, PNG and WebP codecs, strided arrays, malformed input, and exact raw-depth round trips without changing the Arrow wire schema.
 - Keep Msgs package-family versions synchronized across Python, Rust and C++; Rust/C++ codec behavior and the `forge_msgs.v1` interface are unchanged.
+- Publish as the independently versioned `forge-msgs-v2.1.0` family tag. The earlier 2.0.1 candidate was not released to PyPI.
+- Reject nonexistent and lightweight release tags before checkout, with an actionable error for manual workflow runs.
 
 ## forge-common 2.1.0 - 2026-09-08
 

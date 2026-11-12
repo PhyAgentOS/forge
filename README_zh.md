@@ -25,7 +25,7 @@ Forge 是面向 Dora 数据流的机器人基础框架，提供公共消息 sche
 ## 版本状态
 
 Forge 按 Common、Msgs、Robot、Policy、Kinematics、Tool 六个包家族维护。
-Common 为 `2.1.0`，Msgs 为 `2.0.1`；Robot、Policy、Kinematics、Tool 保持 Dora 1.x 对齐的 `2.0.0` 基线。
+Common 为 `2.1.0`，Msgs 为 `2.1.0`；Robot、Policy、Kinematics、Tool 保持 Dora 1.x 对齐的 `2.0.0` 基线。
 各家族可独立发布次版本和修订版本；同一家族跨语言包版本保持一致，
 实际能力允许不同，语言无关接口版本另行跟踪。
 
@@ -282,6 +282,12 @@ uv run python scripts/build_python_distributions.py --release-family msgs
 
 本地家族发布模式拒绝脏工作区，并要求预期受保护标签尚不存在。
 家族标签 CI 自动选择该家族，并要求标签已存在且指向当前 `HEAD`。
+
+Python Msgs 本次发布使用附注标签 `forge-msgs-v2.1.0`，指向已审核并合并的发布提交。
+在 `PhyAgentOS/forge` 创建该标签会自动触发 `publish-pypi.yml`。
+在 **Run workflow** 填写标签名称不会创建标签；流水线会在检出前拒绝不存在或轻量标签。
+PyPI Trusted Publishing 应绑定 `PhyAgentOS/forge`、工作流 `publish-pypi.yml`、
+环境 `pypi-msgs`。详细流程见 [RELEASING.md](RELEASING.md)。
 
 运行 C++ 测试：
 
