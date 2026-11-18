@@ -412,3 +412,22 @@ flowchart TB
 ## 许可证
 
 Forge 使用 Apache License 2.0，详见 `LICENSE`。
+
+## 分版本发布
+
+| 维护线 | 源码 | 包版本与标签 | 运行时兼容 |
+| --- | --- | --- | --- |
+| Forge 1.x | `stable/1.x` | 包族 1.x，`forge-<family>-v1.X.Y` | Forge 1.x 对接节点 / Dora 0.4.x |
+| Forge 2.x | `master` | 包族 2.x，`forge-<family>-v2.X.Y` | Forge 2.x 对接节点 / Dora 1.x |
+
+两条维护线均从 `master` 运行 **Publish Python package to PyPI**，选择 `release_line=1.x` 或 `2.x`，并指定已存在的 annotated 包族标签。流水线校验分支归属、标签与源码一致性、`versions.toml` 和包族元数据，不创建/移动标签，也不修改包版本。
+
+```bash
+# 将 TAG 替换为未发布、已审查且与源码元数据一致的新包族标签。
+TAG=forge-msgs-v1.3.2
+gh workflow run publish-pypi.yml --ref master -f tag="$TAG" -f release_line=1.x -f publish=false
+TAG=forge-msgs-v2.1.1
+gh workflow run publish-pypi.yml --ref master -f tag="$TAG" -f release_line=2.x -f publish=false
+```
+
+`publish=false` 只构建和检查 wheel/sdist；确需发布 PyPI 时设置 `publish=true`。tag push 保留自动发布，按包族主版本确定维护线。发布前需配置对应 `pypi-<family>` Trusted Publisher 环境。已发布版本和现有标签不可覆盖；修改源码后重试需使用未占用的新补丁版本。打包成功不等于节点或硬件验收。Forge 2.x 属于 **breaking change**，库、节点和 Dora 必须对齐部署。Rust crate 和 C++ 发布独立于此 Python 工作流。
