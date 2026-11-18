@@ -55,6 +55,7 @@
   "core_checks": {
     "family_version_validators": "passed on both 1.x and 2.x",
     "wheel_sdist_family_pairs": 12,
-    "twine_check": "passed"
+    "twine_check": "passed",
+    "release_resolver_cases_passed": 15
   }
 }
