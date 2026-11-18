@@ -471,6 +471,8 @@ details.
 
 ## Versioned releases
 
+**Mandatory tag-first release rule:** merge the version/lock change, create an annotated version tag on that reviewed commit, build that exact tag, validate the artifacts, then publish. Moving branch names, untagged commit IDs and replacement of published tags are not release inputs.
+
 | Release line | Source | Package and tag | Runtime compatibility |
 | --- | --- | --- | --- |
 | Forge 1.x | `stable/1.x` | Family version 1.x, `forge-<family>-v1.X.Y` | Forge 1.x peers / Dora 0.4.x |
