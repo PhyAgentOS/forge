@@ -95,3 +95,35 @@ def test_manual_release_rejects_wrong_line_before_remote_lookup(tmp_path, tag, l
     )
     assert result.returncode == 1
     assert message in result.stderr
+
+
+def test_release_tooling_checkout_preserves_clean_source_guard(tmp_path, monkeypatch):
+    workflow = yaml.safe_load((ROOT / ".github/workflows/publish-pypi.yml").read_text())
+    job = workflow["jobs"]["publish"]
+    checkouts = [step for step in job["steps"] if step.get("uses", "").startswith("actions/checkout@")]
+    source = tmp_path / checkouts[0]["with"].get("path", ".")
+    tooling = tmp_path / checkouts[1]["with"]["path"]
+    source.mkdir(parents=True, exist_ok=True)
+    subprocess.run(["git", "init", "-q", str(source)], check=True)
+    (source / "versions.toml").write_text('[packages]\ntool = "2.0.1"\n')
+    subprocess.run(["git", "-C", str(source), "add", "versions.toml"], check=True)
+    subprocess.run(
+        ["git", "-C", str(source), "-c", "user.name=Release Test",
+         "-c", "user.email=release-test@example.invalid", "-c", "commit.gpgsign=false",
+         "commit", "-qm", "Release fixture"],
+        check=True,
+    )
+    tooling.mkdir(parents=True, exist_ok=True)
+    (tooling / "helper.py").write_text("# Release tooling from the workflow revision.\n")
+
+    working_directory = tmp_path / job.get("defaults", {}).get("run", {}).get("working-directory", ".")
+    monkeypatch.syspath_prepend(str(ROOT / "scripts"))
+    import build_python_distributions as builder
+
+    monkeypatch.setattr(builder, "ROOT", working_directory)
+    builder._check_release_context("tool", None)
+
+    # Unexpected source files must still block a release.
+    (source / "unexpected.py").write_text("# Unreviewed source change.\n")
+    with pytest.raises(builder.BuildError, match="clean Git working tree"):
+        builder._check_release_context("tool", None)

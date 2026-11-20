@@ -35,14 +35,14 @@ packages, for example a separate `forge_robots` repository.
 ## Status
 
 Forge tracks six package families: Common, Msgs, Robot, Policy, Kinematics, and Tool.
-Common is `2.1.0`; Msgs is `2.1.0`; Robot, Policy, Kinematics and Tool remain
+Common and Msgs are `2.1.0`; Tool is `2.0.1`; Robot, Policy and Kinematics remain
 at the coordinated Dora 1.x `2.0.0` baseline. Families can receive independent minor and patch releases.
 Package versions within one family remain synchronized across languages;
 capabilities may differ, and language-neutral interface versions are tracked
 separately.
 
 The Python Msgs compressed-image codec requires Pillow `>=13.0.0,<14`.
-Msgs still supports Python 3.11; the complete workspace requires Python 3.12.
+Common, Msgs, and Tool support Python 3.11; the complete workspace requires Python 3.12.
 Consumers pinning Pillow below 13 must update their dependency constraints.
 Raw RGB/depth payloads and the Arrow wire schema are unchanged.
 

@@ -63,7 +63,7 @@ def _tool_envelope(**overrides: object) -> ToolEnvelope:
 
 
 def test_message_type_literal_matches_runtime_registry() -> None:
-    assert set(get_args(ToolMessageType.__value__)) == TOOL_MESSAGE_TYPES
+    assert set(get_args(ToolMessageType)) == TOOL_MESSAGE_TYPES
 
 
 def test_generic_invoke_envelope_round_trips_as_deterministic_utf8_json() -> None:

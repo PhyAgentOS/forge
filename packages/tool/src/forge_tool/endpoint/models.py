@@ -5,12 +5,12 @@ from __future__ import annotations
 import math
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from typing import Any, Literal
+from typing import Any, Literal, TypeAlias
 
 
-type ToolSemantics = Literal["query", "action", "session"]
-type EndpointState = Literal["ready", "busy", "degraded", "unavailable"]
-type ExecutionPhase = Literal[
+ToolSemantics: TypeAlias = Literal["query", "action", "session"]
+EndpointState: TypeAlias = Literal["ready", "busy", "degraded", "unavailable"]
+ExecutionPhase: TypeAlias = Literal[
     "accepted",
     "running",
     "stopping",
@@ -20,7 +20,7 @@ type ExecutionPhase = Literal[
     "stopped",
     "unknown",
 ]
-type ToolEventType = Literal[
+ToolEventType: TypeAlias = Literal[
     "progress",
     "heartbeat",
     "executor_completed",
@@ -28,18 +28,18 @@ type ToolEventType = Literal[
     "cancelled",
     "stopped",
 ]
-type ToolResultStatus = Literal[
+ToolResultStatus: TypeAlias = Literal[
     "succeeded",
     "failed",
     "cancelled",
     "stopped",
     "unknown",
 ]
-type ToolResultResponseStatus = Literal["pending", "available", "not_found"]
-type ToolControlCommand = Literal["cancel", "stop"]
-type EndpointRegistryOperation = Literal["register", "unregister"]
-type EndpointRegistryResponseStatus = Literal["accepted", "rejected"]
-type ToolControlStatus = Literal[
+ToolResultResponseStatus: TypeAlias = Literal["pending", "available", "not_found"]
+ToolControlCommand: TypeAlias = Literal["cancel", "stop"]
+EndpointRegistryOperation: TypeAlias = Literal["register", "unregister"]
+EndpointRegistryResponseStatus: TypeAlias = Literal["accepted", "rejected"]
+ToolControlStatus: TypeAlias = Literal[
     "accepted",
     "rejected",
     "terminal",

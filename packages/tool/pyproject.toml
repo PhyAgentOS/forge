@@ -1,9 +1,9 @@
 [project]
 name = "forge-tool"
-version = "2.0.0"
+version = "2.0.1"
 description = "Typed endpoint contracts for Forge query, action, and session tools."
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
 authors = [

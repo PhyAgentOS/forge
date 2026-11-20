@@ -4,6 +4,15 @@ Forge package families are versioned independently. Python, Rust, and C++ implem
 
 ## Unreleased
 
+## forge-tool 2.0.1 - 2026-11-20
+
+Family tag: `forge-tool-v2.0.1`
+
+- Support Python 3.11 in the standalone Tool package and its optional Arrow/Dora binding; the complete Forge workspace still requires Python 3.12.
+- Replace Python 3.12-only type aliases and generic-function syntax with `typing.TypeAlias` and `TypeVar`, without changing the ToolEndpoint wire protocol or execution lifecycle. Runtime type inspection now uses `typing.get_args(alias)` rather than `alias.__value__`.
+- Add a Python 3.11 syntax guard to the existing test suite and validate the built wheel in a separate Python 3.11 environment.
+- Keep release tooling in a sibling checkout so family builds retain the clean-source check without rejecting CI's own tooling checkout.
+
 ## forge-msgs 2.1.0 - 2026-11-12
 
 Family tag: `forge-msgs-v2.1.0`

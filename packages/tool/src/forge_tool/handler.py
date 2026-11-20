@@ -6,7 +6,7 @@ import asyncio
 from collections import OrderedDict
 from collections.abc import Awaitable, Callable, Mapping
 from dataclasses import dataclass, field
-from typing import cast
+from typing import TypeAlias, cast
 
 from .endpoint import (
     ActionToolEndpoint,
@@ -40,7 +40,7 @@ from .wire import (
     validate_message_envelope,
 )
 
-type ToolEventSink = Callable[[ToolEnvelope], Awaitable[None]]
+ToolEventSink: TypeAlias = Callable[[ToolEnvelope], Awaitable[None]]
 
 _REQUIRED_METHODS = {
     "query": ("query",),
