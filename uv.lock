@@ -389,7 +389,7 @@ requires-dist = [
 
 [[package]]
 name = "forge-tool"
-version = "1.0.0"
+version = "1.0.1"
 source = { editable = "packages/tool" }
 
 [package.optional-dependencies]

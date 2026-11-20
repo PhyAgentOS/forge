@@ -5,7 +5,7 @@ from __future__ import annotations
 import math
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from typing import Any, Literal
+from typing import Any, Literal, TypeAlias
 
 from .errors import ToolProtocolError
 
@@ -13,7 +13,7 @@ TOOL_ENDPOINT_PROTOCOL = "forge.tool.endpoint/v1alpha1"
 MAX_SAFE_JSON_INTEGER = 9_007_199_254_740_991
 MAX_JSON_DEPTH = 64
 
-type ToolMessageType = Literal[
+ToolMessageType: TypeAlias = Literal[
     "endpoint.register",
     "endpoint.unregister",
     "endpoint.registry.response",

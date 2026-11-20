@@ -4,6 +4,14 @@ Forge package families are versioned independently. Implementations of the same 
 
 ## Unreleased
 
+## forge-tool 1.0.1 - 2026-11-20
+
+Family tag: `forge-tool-v1.0.1`
+
+- Backport Python 3.11 support to the standalone Tool package and its optional Arrow/Dora binding. Preserve the Forge 1.x carrier dependency (`forge-msgs>=1.2.0,<2`) and Dora 0.4 runtime line; the complete workspace still requires Python 3.12.
+- Replace Python 3.12-only aliases and generic-function syntax with `typing.TypeAlias` and `TypeVar` without changing the ToolEndpoint wire protocol or execution lifecycle. Runtime alias inspection uses `typing.get_args(alias)` instead of `alias.__value__`.
+- Add a Python 3.11 syntax guard and validate the built wheel in an isolated Python 3.11 environment.
+
 ## forge-tool 1.0.0 - 2026-08-27
 
 Protected tag: `forge-tool-v1.0.0`

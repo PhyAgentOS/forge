@@ -1,5 +1,7 @@
 # Forge
 
+[English](README.md) | [简体中文](README_zh.md)
+
 Forge is a small robotics framework core for Dora dataflows. It provides shared
 message schemas, Python and Rust message implementations, reusable node runner
 helpers for robot drivers and policy nodes, and typed tool endpoint contracts.
@@ -31,8 +33,8 @@ packages, for example a separate `forge_robots` repository.
 ## Status
 
 Forge tracks six independently versioned package families: Common, Msgs, Robot,
-Policy, Kinematics, and Tool. Current releases are Common `1.0.1`, Msgs `1.3.0`, Robot
-`1.0.1`, Policy `1.0.1`, Kinematics `1.0.1`, and Tool `0.1.0`. Implementations of one
+Policy, Kinematics, and Tool. Current releases are Common `1.0.1`, Msgs `1.3.1`, Robot
+`1.0.1`, Policy `1.0.1`, Kinematics `1.0.1`, and Tool `1.0.1`. Implementations of one
 family across Python, Rust, C++, and the language-neutral interface remain synchronized;
 unrelated families may release at different rates.
 
@@ -49,7 +51,7 @@ requires its next major version. See
 [`RELEASING.md`](RELEASING.md) for package-family boundaries, protected GitLab
 tags, and validation procedures.
 
-Forge ToolEndpoint v1alpha1 is the first tagged/public Tool contract and is released as
+Forge ToolEndpoint v1alpha1 was first published as
 Tool `0.1.0` with its carrier in Msgs `1.2.0`. Compatible deployments must use matching
 Gateway and provider revisions. Earlier untagged prototypes are incompatible, and mixed
 deployments are not supported as backward compatible.
@@ -84,7 +86,7 @@ forge/
 
 ## Requirements
 
-- Python 3.12 or newer for the workspace
+- Python 3.12 or newer for the workspace; standalone Common, Msgs, and Tool packages support Python 3.11
 - Rust toolchain with edition 2024 support
 - A C++20-capable compiler and CMake 3.20 or newer for C++ packages;
   `cpp/forge_msgs` and its dependents require C++20
@@ -96,6 +98,15 @@ forge/
   node packages)
 
 ## Installation
+
+For a standalone Python 3.11 node on the legacy Forge 1.x line:
+
+```bash
+python -m pip install "forge-tool[dora]==1.0.1"
+```
+
+This keeps `forge-msgs>=1.2.0,<2`; the concrete node supplies its Dora runtime.
+`stable/1.x` retains Dora 0.4 compatibility, while `master` maintains Forge 2.x.
 
 Clone the repository and install the default Python workspace:
 

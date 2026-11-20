@@ -34,25 +34,28 @@ handling therefore does not imply a complete caller-to-provider Action or Sessio
 
 ## Installation
 
-Python 3.12 or newer is required. Install the current Tool release from PyPI:
+Python 3.11 or newer is required. Install the current Tool release from PyPI:
 
 ```bash
-pip install forge-tool
+pip install 'forge-tool>=1.0.1,<2'
 ```
 
 Install the optional Arrow carrier integration when embedding an endpoint in a
 Dora-capable Operator or Adapter node:
 
 ```bash
-pip install 'forge-tool[dora]'
+pip install 'forge-tool[dora]>=1.0.1,<2'
 ```
 
-From a Forge source checkout, run code through the repository workspace instead of
-syncing the package subproject in isolation:
+The complete Forge source workspace still requires Python 3.12 or newer. From a
+source checkout, run code through that workspace:
 
 ```bash
 uv run python your_endpoint.py
 ```
+
+For Python 3.11, install the standalone Tool distribution into a separate environment;
+the workspace also includes packages that require Python 3.12.
 
 The base package has no runtime dependencies. `import forge_tool` does not import
 `forge_msgs` or PyArrow. The optional extra adds the carrier stack, not `dora-rs`; the
@@ -413,10 +416,10 @@ Explicitly import from `forge_tool.dora`:
 
 ## Protocol documentation
 
-- [Tool documentation index](https://github.com/Forgelab-Robotics/forge/blob/forge-tool-v1.0.0/interfaces/forge_tool/README.md)
-- [Architecture](https://github.com/Forgelab-Robotics/forge/blob/forge-tool-v1.0.0/interfaces/forge_tool/ARCHITECTURE.md)
-- [ToolEndpoint Wire protocol](https://github.com/Forgelab-Robotics/forge/blob/forge-tool-v1.0.0/interfaces/forge_tool/PROTOCOL.md)
-- [Canonical `ToolMessage` Arrow schema](https://github.com/Forgelab-Robotics/forge/blob/forge-msgs-v1.2.0/interfaces/forge_msgs/tool.v1.yaml)
+- [Tool documentation index](https://github.com/PhyAgentOS/forge/blob/forge-tool-v1.0.1/interfaces/forge_tool/README.md)
+- [Architecture](https://github.com/PhyAgentOS/forge/blob/forge-tool-v1.0.1/interfaces/forge_tool/ARCHITECTURE.md)
+- [ToolEndpoint Wire protocol](https://github.com/PhyAgentOS/forge/blob/forge-tool-v1.0.1/interfaces/forge_tool/PROTOCOL.md)
+- [Canonical `ToolMessage` Arrow schema](https://github.com/PhyAgentOS/forge/blob/forge-msgs-v1.3.1/interfaces/forge_msgs/tool.v1.yaml)
 
 ## Development
 
@@ -428,4 +431,4 @@ uv run pytest packages/tool/tests
 
 ## License
 
-Apache-2.0. See the release [LICENSE](https://github.com/Forgelab-Robotics/forge/blob/forge-tool-v1.0.0/LICENSE).
+Apache-2.0. See the release [LICENSE](https://github.com/PhyAgentOS/forge/blob/forge-tool-v1.0.1/LICENSE).
