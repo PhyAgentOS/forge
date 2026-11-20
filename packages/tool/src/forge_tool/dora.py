@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import logging
 from collections.abc import Awaitable, Callable
+from typing import TypeAlias
 
 import pyarrow as pa
 from forge_msgs import ToolMessage, ToolMessageSizeError
@@ -26,8 +27,8 @@ _CORRELATED_ERROR_RESERVE_BYTES = 512
 _MIN_BINDING_MESSAGE_BYTES = 1_024
 _DEFAULT_CARRIER_OVERHEAD_BYTES = 65_536
 
-type _ToolArrowValue = pa.RecordBatch | pa.Table | pa.StructArray
-type DoraEventSink = Callable[[pa.RecordBatch], Awaitable[None]]
+_ToolArrowValue: TypeAlias = pa.RecordBatch | pa.Table | pa.StructArray
+DoraEventSink: TypeAlias = Callable[[pa.RecordBatch], Awaitable[None]]
 
 
 def _message_envelope(message: ToolMessage) -> ToolEnvelope:

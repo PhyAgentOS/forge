@@ -9,11 +9,11 @@ Forge is a Monorepo with independently versioned logical package families. Imple
 ```toml
 [packages]
 common = "1.0.1"
-msgs = "1.3.0"
+msgs = "1.3.1"
 robot = "1.0.1"
 policy = "1.0.1"
 kinematics = "1.0.1"
-tool = "0.1.0"
+tool = "1.0.1"
 ```
 
 The root `pyproject.toml` is a virtual uv workspace, not a published `forge` Python distribution. Its project version is workspace tooling metadata and is not a package-family release version.
