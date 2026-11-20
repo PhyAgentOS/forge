@@ -25,12 +25,12 @@ Forge 是面向 Dora 数据流的机器人基础框架，提供公共消息 sche
 ## 版本状态
 
 Forge 按 Common、Msgs、Robot、Policy、Kinematics、Tool 六个包家族维护。
-Common 为 `2.1.0`，Msgs 为 `2.1.0`；Robot、Policy、Kinematics、Tool 保持 Dora 1.x 对齐的 `2.0.0` 基线。
+Common 和 Msgs 为 `2.1.0`，Tool 为 `2.0.1`；Robot、Policy、Kinematics 保持 Dora 1.x 对齐的 `2.0.0` 基线。
 各家族可独立发布次版本和修订版本；同一家族跨语言包版本保持一致，
 实际能力允许不同，语言无关接口版本另行跟踪。
 
 Python Msgs 的压缩图像编解码要求 Pillow `>=13.0.0,<14`。
-Msgs 继续支持 Python 3.11；完整工作区要求 Python 3.12。
+Common、Msgs 和 Tool 支持 Python 3.11；完整工作区要求 Python 3.12。
 固定使用 Pillow 13 以下版本的使用方需要更新依赖约束。
 原始 RGB／深度数据及 Arrow 线协议保持不变。
 

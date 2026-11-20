@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, cast
+from typing import Any, TypeVar, cast
 
 from ..endpoint import (
     EndpointRegistryResponse,
@@ -23,6 +23,8 @@ from ..endpoint import (
 from .descriptor import validate_registration_envelope
 from .envelope import ToolEnvelope, _is_blank, _json_value
 from .errors import ToolProtocolError
+
+_T = TypeVar("_T")
 
 
 def _error(message: str, path: str) -> ToolProtocolError:
@@ -59,7 +61,7 @@ def _fields(
         raise _error("; ".join(details), path)
 
 
-def _construct[T](factory: type[T], path: str, **values: Any) -> T:
+def _construct(factory: type[_T], path: str, **values: Any) -> _T:
     try:
         return factory(**values)
     except (TypeError, ValueError) as error:

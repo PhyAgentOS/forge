@@ -13,7 +13,7 @@ msgs = "2.1.0"
 robot = "2.0.0"
 policy = "2.0.0"
 kinematics = "2.0.0"
-tool = "2.0.0"
+tool = "2.0.1"
 
 [interfaces]
 msgs = 1

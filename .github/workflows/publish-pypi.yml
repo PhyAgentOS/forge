@@ -81,6 +81,9 @@ jobs:
     name: Publish ${{ needs.resolve.outputs.tag }}
     needs: resolve
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: release-source
     environment:
       name: pypi-${{ needs.resolve.outputs.family }}
     permissions:
@@ -91,13 +94,14 @@ jobs:
       uses: actions/checkout@v4
       with:
         ref: ${{ needs.resolve.outputs.tag }}
+        path: release-source
         fetch-depth: 0
         persist-credentials: false
     - name: Check out release tooling from the workflow commit
       uses: actions/checkout@v4
       with:
         ref: ${{ github.workflow_sha }}
-        path: .release-tools
+        path: release-tools
         persist-credentials: false
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -107,7 +111,7 @@ jobs:
       env:
         RELEASE_TAG: ${{ needs.resolve.outputs.tag }}
         RELEASE_LINE: ${{ needs.resolve.outputs.release_line }}
-      run: python .release-tools/scripts/check_release_line.py --line "$RELEASE_LINE" --tag "$RELEASE_TAG" --default-branch master
+      run: python ../release-tools/scripts/check_release_line.py --line "$RELEASE_LINE" --tag "$RELEASE_TAG" --default-branch master
     - name: Verify annotated tag and commit
       shell: bash
       env:
@@ -142,7 +146,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ${{ needs.resolve.outputs.distribution }}-${{ needs.resolve.outputs.version }}
-        path: dist/release/python/${{ needs.resolve.outputs.family }}/*
+        path: release-source/dist/release/python/${{ needs.resolve.outputs.family }}/*
         if-no-files-found: error
     - name: Publish wheel and source distribution to PyPI
       shell: bash
