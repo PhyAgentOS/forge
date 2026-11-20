@@ -1,137 +1,157 @@
 name: Publish Python package to PyPI
-
 on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Existing annotated family tag (for example, forge-msgs-v2.1.0); this input does not create a tag"
+        description: Existing annotated family tag (for example, forge-msgs-v2.1.0); this input does not create a tag
         required: true
         type: string
-
+      release_line:
+        description: Forge package release line
+        required: true
+        type: choice
+        options:
+        - 1.x
+        - 2.x
+        default: 2.x
+      publish:
+        description: Publish verified distributions to PyPI (false builds artifacts only)
+        required: true
+        type: boolean
+        default: false
   push:
     tags:
-      - "forge-*-v*"
-
+    - forge-*-v*
 concurrency:
   group: pypi-${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
   cancel-in-progress: false
-
 jobs:
   resolve:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-
     outputs:
       tag: ${{ steps.release.outputs.tag }}
       family: ${{ steps.release.outputs.family }}
       version: ${{ steps.release.outputs.version }}
       distribution: ${{ steps.release.outputs.distribution }}
-
+      release_line: ${{ steps.release.outputs.release_line }}
     steps:
-      - name: Resolve and validate release tag
-        id: release
-        shell: bash
-        env:
-          REQUESTED_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
+    - name: Resolve and validate release tag
+      id: release
+      shell: bash
+      env:
+        REQUESTED_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+        GH_TOKEN: ${{ github.token }}
+        SELECTED_LINE: ${{ inputs.release_line }}
+      run: |
+        set -euo pipefail
 
-          if [[ ! "$REQUESTED_TAG" =~ ^forge-(common|msgs|robot|policy|kinematics|tool)-v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
-            echo "Unsupported release tag: $REQUESTED_TAG" >&2
-            exit 1
-          fi
+        if [[ ! "$REQUESTED_TAG" =~ ^forge-(common|msgs|robot|policy|kinematics|tool)-v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+          echo "Unsupported release tag: $REQUESTED_TAG" >&2
+          exit 1
+        fi
 
-          family="${BASH_REMATCH[1]}"
-          version="${BASH_REMATCH[2]}.${BASH_REMATCH[3]}.${BASH_REMATCH[4]}"
+        family="${BASH_REMATCH[1]}"
+        version="${BASH_REMATCH[2]}.${BASH_REMATCH[3]}.${BASH_REMATCH[4]}"
+        release_line="${BASH_REMATCH[2]}.x"
+        if [[ "$release_line" != "1.x" && "$release_line" != "2.x" ]]; then
+          echo "Only Forge 1.x and 2.x releases are supported" >&2; exit 1
+        fi
+        if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" && "$SELECTED_LINE" != "$release_line" ]]; then
+          echo "Selected line differs from the family tag" >&2; exit 1
+        fi
 
-          if ! tag_type=$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/${REQUESTED_TAG}" --jq '.object.type'); then
-            echo "::error::Release tag '${REQUESTED_TAG}' does not exist or cannot be read. Run workflow does not create tags. Create the annotated family tag on the reviewed release commit before retrying." >&2
-            exit 1
-          fi
-          if [[ "$tag_type" != "tag" ]]; then
-            echo "::error::Release '${REQUESTED_TAG}' must be an annotated tag; a lightweight tag is not supported." >&2
-            exit 1
-          fi
+        if ! tag_type=$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/${REQUESTED_TAG}" --jq '.object.type'); then
+          echo "::error::Release tag '${REQUESTED_TAG}' does not exist or cannot be read. Run workflow does not create tags. Create the annotated family tag on the reviewed release commit before retrying." >&2
+          exit 1
+        fi
+        if [[ "$tag_type" != "tag" ]]; then
+          echo "::error::Release '${REQUESTED_TAG}' must be an annotated tag; a lightweight tag is not supported." >&2
+          exit 1
+        fi
 
-          echo "tag=$REQUESTED_TAG" >> "$GITHUB_OUTPUT"
-          echo "family=$family" >> "$GITHUB_OUTPUT"
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-          echo "distribution=forge-$family" >> "$GITHUB_OUTPUT"
+        echo "tag=$REQUESTED_TAG" >> "$GITHUB_OUTPUT"
+        echo "family=$family" >> "$GITHUB_OUTPUT"
+        echo "version=$version" >> "$GITHUB_OUTPUT"
+        echo "distribution=forge-$family" >> "$GITHUB_OUTPUT"
 
+        echo "release_line=$release_line" >> "$GITHUB_OUTPUT"
   publish:
     name: Publish ${{ needs.resolve.outputs.tag }}
     needs: resolve
     runs-on: ubuntu-latest
-
     environment:
       name: pypi-${{ needs.resolve.outputs.family }}
-
     permissions:
       contents: read
       id-token: write
-
     steps:
-      - name: Check out immutable release tag
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.resolve.outputs.tag }}
-          fetch-depth: 0
+    - name: Check out immutable release tag
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ needs.resolve.outputs.tag }}
+        fetch-depth: 0
+        persist-credentials: false
+    - name: Check out release tooling from the workflow commit
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.workflow_sha }}
+        path: .release-tools
+        persist-credentials: false
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Validate package release line and source branch
+      env:
+        RELEASE_TAG: ${{ needs.resolve.outputs.tag }}
+        RELEASE_LINE: ${{ needs.resolve.outputs.release_line }}
+      run: python .release-tools/scripts/check_release_line.py --line "$RELEASE_LINE" --tag "$RELEASE_TAG" --default-branch master
+    - name: Verify annotated tag and commit
+      shell: bash
+      env:
+        RELEASE_TAG: ${{ needs.resolve.outputs.tag }}
+      run: |
+        set -euo pipefail
 
-      - name: Verify annotated tag and commit
-        shell: bash
-        env:
-          RELEASE_TAG: ${{ needs.resolve.outputs.tag }}
-        run: |
-          set -euo pipefail
+        test "$(git cat-file -t "$RELEASE_TAG")" = "tag"
+        test "$(git rev-parse "$RELEASE_TAG^{commit}")" = "$(git rev-parse HEAD)"
 
-          test "$(git cat-file -t "$RELEASE_TAG")" = "tag"
-          test "$(git rev-parse "$RELEASE_TAG^{commit}")" = "$(git rev-parse HEAD)"
+        python scripts/check_release_versions.py \
+          --tag "$RELEASE_TAG"
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        enable-cache: true
+    - name: Install locked build dependencies
+      run: |
+        uv sync --locked --all-packages --all-extras --dev
+    - name: Build and validate release distributions
+      shell: bash
+      env:
+        CI_COMMIT_TAG: ${{ needs.resolve.outputs.tag }}
+        RELEASE_FAMILY: ${{ needs.resolve.outputs.family }}
+      run: |
+        set -euo pipefail
 
-          python scripts/check_release_versions.py \
-            --tag "$RELEASE_TAG"
+        uv run python scripts/build_python_distributions.py \
+          --release-family "$RELEASE_FAMILY" \
+          --out-dir "dist/release/python/$RELEASE_FAMILY"
+    - name: Upload release artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ needs.resolve.outputs.distribution }}-${{ needs.resolve.outputs.version }}
+        path: dist/release/python/${{ needs.resolve.outputs.family }}/*
+        if-no-files-found: error
+    - name: Publish wheel and source distribution to PyPI
+      shell: bash
+      env:
+        RELEASE_FAMILY: ${{ needs.resolve.outputs.family }}
+      run: |
+        set -euo pipefail
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v5
-        with:
-          enable-cache: true
-
-      - name: Install locked build dependencies
-        run: |
-          uv sync --locked --all-packages --all-extras --dev
-
-      - name: Build and validate release distributions
-        shell: bash
-        env:
-          CI_COMMIT_TAG: ${{ needs.resolve.outputs.tag }}
-          RELEASE_FAMILY: ${{ needs.resolve.outputs.family }}
-        run: |
-          set -euo pipefail
-
-          uv run python scripts/build_python_distributions.py \
-            --release-family "$RELEASE_FAMILY" \
-            --out-dir "dist/release/python/$RELEASE_FAMILY"
-
-      - name: Upload release artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ needs.resolve.outputs.distribution }}-${{ needs.resolve.outputs.version }}
-          path: dist/release/python/${{ needs.resolve.outputs.family }}/*
-          if-no-files-found: error
-
-      - name: Publish wheel and source distribution to PyPI
-        shell: bash
-        env:
-          RELEASE_FAMILY: ${{ needs.resolve.outputs.family }}
-        run: |
-          set -euo pipefail
-
-          uv publish --trusted-publishing always \
-            "dist/release/python/$RELEASE_FAMILY"/*.whl \
-            "dist/release/python/$RELEASE_FAMILY"/*.tar.gz
+        uv publish --trusted-publishing always \
+          "dist/release/python/$RELEASE_FAMILY"/*.whl \
+          "dist/release/python/$RELEASE_FAMILY"/*.tar.gz
+      if: ${{ github.event_name == 'push' || inputs.publish }}

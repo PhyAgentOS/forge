@@ -1,0 +1,62 @@
+{
+  "repository": "PhyAgentOS/forge",
+  "target": "master",
+  "scope": "Build and document Forge 1.x and 2.x releases",
+  "release_line_unit_tests": {
+    "command": "python -m unittest discover -s scripts -p test_release_line.py -v",
+    "passed": 12
+  },
+  "workflow_validation": {
+    "tool": "actionlint 1.7.12",
+    "result": "passed"
+  },
+  "distribution_checks": {
+    "result": "source-only project or separately checked core package families",
+    "artifacts": []
+  },
+  "source_profile_scope": "Local candidate worktrees; proposed maintenance changes are not deployed or merged yet. Full checksums and raw logs remain in the local workspace.",
+  "source_profiles": [
+    {
+      "repo": "PhyAgentOS/forge",
+      "line": "1.x",
+      "version": "1.3.1",
+      "forge_majors": [
+        1
+      ],
+      "dora_versions": [],
+      "kind": "family",
+      "ready": true
+    },
+    {
+      "repo": "PhyAgentOS/forge",
+      "line": "2.x",
+      "version": "2.1.0",
+      "forge_majors": [
+        2
+      ],
+      "dora_versions": [],
+      "kind": "family",
+      "ready": true
+    }
+  ],
+  "dora_run": {
+    "single_node": {
+      "status": "not-run",
+      "reason": "This change verifies release tooling and version metadata; no current node runtime acceptance is claimed."
+    },
+    "gateway_chain": {
+      "status": "not-run",
+      "reason": "Fresh integration acceptance remains required; every such chain must include adapter-forge-gateway from the same Forge line."
+    }
+  },
+  "linux_binary_release_build": "not-run in this change; existing binary workflow checks are preserved",
+  "hardware_model_sustained_rollback_acceptance": "pending",
+  "published_tags_releases_modified": false,
+  "gitlab_sync": false,
+  "core_checks": {
+    "family_version_validators": "passed on both 1.x and 2.x",
+    "wheel_sdist_family_pairs": 12,
+    "twine_check": "passed",
+    "release_resolver_cases_passed": 15
+  }
+}

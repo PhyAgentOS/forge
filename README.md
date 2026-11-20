@@ -468,3 +468,24 @@ report security issues using the process in `SECURITY.md`.
 
 Forge is licensed under the Apache License, Version 2.0. See `LICENSE` for
 details.
+
+## Versioned releases
+
+**Mandatory tag-first release rule:** merge the version/lock change, create an annotated version tag on that reviewed commit, build that exact tag, validate the artifacts, then publish. Moving branch names, untagged commit IDs and replacement of published tags are not release inputs.
+
+| Release line | Source | Package and tag | Runtime compatibility |
+| --- | --- | --- | --- |
+| Forge 1.x | `stable/1.x` | Family version 1.x, `forge-<family>-v1.X.Y` | Forge 1.x peers / Dora 0.4.x |
+| Forge 2.x | `master` | Family version 2.x, `forge-<family>-v2.X.Y` | Forge 2.x peers / Dora 1.x |
+
+Run **Publish Python package to PyPI** from `master` for both lines; the selected existing annotated family tag determines the source. Select `release_line=1.x` or `2.x`. Branch ancestry, tag/source identity, `versions.toml` and family metadata must agree. The workflow never creates or moves tags and does not change package versions.
+
+```bash
+# Replace TAG with a new reviewed family tag matching its source metadata.
+TAG=forge-msgs-v1.3.2
+gh workflow run publish-pypi.yml --ref master -f tag="$TAG" -f release_line=1.x -f publish=false
+TAG=forge-msgs-v2.1.1
+gh workflow run publish-pypi.yml --ref master -f tag="$TAG" -f release_line=2.x -f publish=false
+```
+
+`publish=false` builds and validates wheel/sdist artifacts only. For an intentional PyPI release set `publish=true`; tag-push events retain automatic publishing and derive the line from the family major. Configure the corresponding `pypi-<family>` Trusted Publisher environment before publishing. Published versions and existing tags are immutable. Use an unused patch version for retries requiring changed code. Successful packaging is not node or hardware acceptance. Forge 2.x is a **breaking change**: deploy matching Forge libraries, nodes and Dora together. Rust crate and C++ distribution publication remain separate from this Python workflow.
